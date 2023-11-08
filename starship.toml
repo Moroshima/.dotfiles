@@ -1,0 +1,14 @@
+# ~/.config/starship.toml
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+format = """$character"""
+
+# Replace the '❯' symbol in the prompt with '$'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = "\\$" # The 'success_symbol' segment is being set to '$' without a specific color
+error_symbol = "[\\$](red)"
