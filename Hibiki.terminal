@@ -23,12 +23,16 @@
 	<integer>1</integer>
 	<key>ShouldRestoreContent</key>
 	<false/>
+	<key>ShowActiveProcessInTabTitle</key>
+	<false/>
+	<key>ShowActiveProcessInTitle</key>
+	<false/>
 	<key>ShowDimensionsInTitle</key>
 	<false/>
 	<key>ShowRepresentedURLPathInTitle</key>
 	<true/>
 	<key>name</key>
-	<string>Basic</string>
+	<string>Hibiki</string>
 	<key>shellExitAction</key>
 	<integer>1</integer>
 	<key>type</key>

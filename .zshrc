@@ -1,4 +1,43 @@
-# https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
+#
+# ~/.zshrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ll='ls -l'
+alias l.='ls -d .*'
+
+alias grep='grep --color=auto'
+alias egrep='grep -E --color=auto'
+alias fgrep='grep -F --color=auto'
+
+alias xzgrep='xzgrep --color=auto'
+alias xzegrep='xzegrep --color=auto'
+alias xzfgrep='xzfgrep --color=auto'
+
+alias zgrep='zgrep --color=auto'
+alias zfgrep='zfgrep --color=auto'
+alias zegrep='zegrep --color=auto'
+
+alias md5sum='md5 -r'
+alias sha1sum='shasum -a 1'
+alias sha224sum='shasum -a 224'
+alias sha256sum='shasum -a 256'
+alias sha384sum='shasum -a 384'
+alias sha512sum='shasum -a 512'
+
+HISTSIZE=20000
+SAVEHIST=10000
+
+# If a new command line being added to the history list duplicates an older one, the older command is removed from the list (even if it is not the previous event).
+setopt HIST_IGNORE_ALL_DUPS
+# When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
+setopt HIST_FCNTL_LOCK
+# Remove superfluous blanks from each command line being added to the history list.
+setopt HIST_REDUCE_BLANKS
+
+# Lazyload function from https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
 function lazyload {
   local seperator='--'
   local seperator_index=${@[(ie)$seperator]}
@@ -28,18 +67,20 @@ function lazyload {
 # (($NUMBER))          resolves to false for NUMBER 0, else true
 # ${(qqqq)VAR}         resolves to quoted value in the format of $'...'
 
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+export HOMEBREW_AUTOREMOVE=1
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
 export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
-export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+
 
 export NVM_DIR="$HOME/.nvm"
-lazyload nvm node corepack npm npx yarn pnpm -- '
+lazyload nvm node corepack npm npx yarn pnpm pnpx -- '
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 '
 
-export NVM_NODEJS_ORG_MIRROR="https://mirrors.ustc.edu.cn/node/"
+export NVM_NODEJS_ORG_MIRROR="https://mirrors.ustc.edu.cn/node"
 
 PROXY_HOST="127.0.0.1"
 PROXY_PORT="7890"
@@ -92,3 +133,10 @@ if type brew &>/dev/null; then
     autoload -Uz compinit
     compinit
 fi
+
+# Load Zsh plugins
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Enable colorized output for ls
+export CLICOLOR=1

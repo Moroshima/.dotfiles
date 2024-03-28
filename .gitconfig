@@ -1,9 +1,9 @@
 [core]
 	editor = vim
-[user]
-	name = Moroshima
-	email = moroshimaitsuki@gmail.com
 [http]
 	proxy = http://127.0.0.1:7890
 [init]
 	defaultBranch = master
+[user]
+	name = Moroshima
+	email = moroshimaitsuki@gmail.com
