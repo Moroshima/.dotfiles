@@ -8,6 +8,8 @@
 alias ll='ls -l'
 alias l.='ls -d .*'
 
+alias cp='cp -ip'
+
 alias grep='grep --color=auto'
 alias egrep='grep -E --color=auto'
 alias fgrep='grep -F --color=auto'
@@ -27,15 +29,19 @@ alias sha256sum='shasum -a 256'
 alias sha384sum='shasum -a 384'
 alias sha512sum='shasum -a 512'
 
+alias 7z='7zz'
+
 HISTSIZE=20000
 SAVEHIST=10000
 
-# If a new command line being added to the history list duplicates an older one, the older command is removed from the list (even if it is not the previous event).
-setopt HIST_IGNORE_ALL_DUPS
 # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
 setopt HIST_FCNTL_LOCK
+# If a new command line being added to the history list duplicates an older one, the older command is removed from the list (even if it is not the previous event).
+setopt HIST_IGNORE_ALL_DUPS
 # Remove superfluous blanks from each command line being added to the history list.
 setopt HIST_REDUCE_BLANKS
+# Do not query the user before executing ‘rm *’ or ‘rm path/*’.
+setopt RM_STAR_SILENT
 
 # Lazyload function from https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
 function lazyload {
