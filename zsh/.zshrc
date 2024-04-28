@@ -8,6 +8,7 @@
 alias ll='ls -l'
 alias l.='ls -d .*'
 
+# Set an alias for 'cp' to make it interactive and preserve file attributes by default
 alias cp='cp -ip'
 
 alias grep='grep --color=auto'
