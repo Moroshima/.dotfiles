@@ -8,7 +8,7 @@
 alias ll='ls -l'
 alias l.='ls -d .*'
 
-# Set an alias for 'cp' to make it interactive and preserve file attributes by default
+# set an alias for 'cp' to make it interactive and preserve file attributes by default
 alias cp='cp -ip'
 
 alias grep='grep --color=auto'
@@ -44,7 +44,7 @@ setopt HIST_REDUCE_BLANKS
 # Do not query the user before executing ‘rm *’ or ‘rm path/*’.
 setopt RM_STAR_SILENT
 
-# Lazyload function from https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
+# lazyload function from https://github.com/qoomon/zsh-lazyload/blob/3fc9de4bba707254e0096b2f86556cc85cf5e637/zsh-lazyload.zsh
 function lazyload {
   local seperator='--'
   local seperator_index=${@[(ie)$seperator]}
@@ -79,7 +79,6 @@ export HOMEBREW_AUTOREMOVE=1
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
 export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
-
 
 export NVM_DIR="$HOME/.nvm"
 lazyload nvm node corepack npm npx yarn pnpm pnpx -- '
@@ -141,9 +140,21 @@ if type brew &>/dev/null; then
     compinit
 fi
 
-# Load Zsh plugins
+# load zsh plugins
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Enable colorized output for ls
+# enable colorized output for ls
 export CLICOLOR=1
+
+vterm_printf() {
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}

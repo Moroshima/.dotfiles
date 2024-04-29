@@ -9,10 +9,11 @@ use stow to manage dotfiles
 
 ```bash
 cd ~/.dotfiles
+stow emacs
 stow git
 stow npm
 stow ssh
-stow npm
+stow zsh
 ```
 
 ## Other configurations
