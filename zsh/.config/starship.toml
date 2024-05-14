@@ -6,9 +6,17 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
-format = """$character"""
+format = """$status$jobs$character"""
 
 # Replace the '❯' symbol in the prompt with '$'
 [character] # The name of the module we are configuring is 'character'
-success_symbol = "\\$" # The 'success_symbol' segment is being set to '$' without a specific color
+success_symbol = "\\$"      # The 'success_symbol' segment is being set to '$' without a specific color
 error_symbol = "[\\$](red)"
+
+[jobs]
+format = "[$symbol]($style)"
+symbol = '+ '
+
+[status]
+format = '[$common_meaning$signal_name$maybe_int]($style) '
+disabled = false
