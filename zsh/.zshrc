@@ -45,7 +45,6 @@ setopt HIST_REDUCE_BLANKS
 setopt RM_STAR_SILENT
 
 export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
-export HOMEBREW_AUTOREMOVE=1
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
 export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
@@ -105,18 +104,6 @@ fi
 # load zsh plugins
 source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-vterm_printf() {
-	if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
-		# Tell tmux to pass the escape sequences through
-		printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-	elif [ "${TERM%%-*}" = "screen" ]; then
-		# GNU screen (screen, screen-256color, screen-256color-bce)
-		printf "\eP\e]%s\007\e\\" "$1"
-	else
-		printf "\e]%s\e\\" "$1"
-	fi
-}
 
 HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
 if [ -f "$HB_CNF_HANDLER" ]; then
