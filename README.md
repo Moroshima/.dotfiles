@@ -12,7 +12,17 @@ cd ~/.dotfiles
 stow git
 stow npm
 stow ssh
+stow vim
 stow zsh
+```
+
+## Vim
+
+intall vim-plug
+
+```bash
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
 ## Other configurations
