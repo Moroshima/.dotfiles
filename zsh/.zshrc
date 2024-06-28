@@ -28,6 +28,10 @@ alias zegrep='zegrep --color=auto'
 alias diff='diff --color=auto'
 alias ip='ip -color=auto'
 
+export LESS='-R --use-color -Dd+r$Du+b$'
+export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export MANROFFOPT="-P -c"
+
 if [[ $KERNEL == 'Darwin' ]]; then
 	# enable colorized output for ls
 	export CLICOLOR=1
@@ -42,10 +46,6 @@ if [[ $KERNEL == 'Darwin' ]]; then
 	alias 7z='7zz'
 elif [[ $KERNEL == 'Linux' ]]; then
 	alias ls='ls --color=auto'
-
-	export LESS='-R --use-color -Dd+r$Du+b$'
-	export MANPAGER="less -R --use-color -Dd+r -Du+b"
-	export MANROFFOPT="-P -c"
 fi
 
 # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
@@ -58,10 +58,12 @@ setopt HIST_REDUCE_BLANKS
 setopt RM_STAR_SILENT
 
 if [[ $KERNEL == 'Linux' ]]; then
+	# configure the zsh history settings
 	HISTFILE="$HOME/.zsh_history"
 	HISTSIZE=2000
 	SAVEHIST=1000
 
+	# load and initialize the command completion system
 	autoload -Uz compinit
 	compinit
 fi
