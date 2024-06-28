@@ -5,11 +5,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+KERNEL=$(uname)
+
 alias ll='ls -l'
 alias l.='ls -d .*'
-
-# enable colorized output for ls
-export CLICOLOR=1
 
 # set an alias for 'cp' to make it interactive and preserve file attributes by default
 alias cp='cp -ip'
@@ -26,14 +25,28 @@ alias zgrep='zgrep --color=auto'
 alias zfgrep='zfgrep --color=auto'
 alias zegrep='zegrep --color=auto'
 
-alias md5sum='md5 -r'
-alias sha1sum='shasum -a 1'
-alias sha224sum='shasum -a 224'
-alias sha256sum='shasum -a 256'
-alias sha384sum='shasum -a 384'
-alias sha512sum='shasum -a 512'
+alias diff='diff --color=auto'
+alias ip='ip -color=auto'
 
-alias 7z='7zz'
+if [[ $KERNEL == 'Darwin' ]]; then
+	# enable colorized output for ls
+	export CLICOLOR=1
+
+	alias md5sum='md5 -r'
+	alias sha1sum='shasum -a 1'
+	alias sha224sum='shasum -a 224'
+	alias sha256sum='shasum -a 256'
+	alias sha384sum='shasum -a 384'
+	alias sha512sum='shasum -a 512'
+
+	alias 7z='7zz'
+elif [[ $KERNEL == 'Linux' ]]; then
+	alias ls='ls --color=auto'
+
+	export LESS='-R --use-color -Dd+r$Du+b$'
+	export MANPAGER="less -R --use-color -Dd+r -Du+b"
+	export MANROFFOPT="-P -c"
+fi
 
 # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
 setopt HIST_FCNTL_LOCK
@@ -44,10 +57,14 @@ setopt HIST_REDUCE_BLANKS
 # Do not query the user before executing ‘rm *’ or ‘rm path/*’.
 setopt RM_STAR_SILENT
 
-export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
-export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
-export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+if [[ $KERNEL == 'Linux' ]]; then
+	HISTFILE="$HOME/.zsh_history"
+	HISTSIZE=2000
+	SAVEHIST=1000
+
+	autoload -Uz compinit
+	compinit
+fi
 
 PROXY_HOST="127.0.0.1"
 PROXY_PORT="7890"
@@ -92,25 +109,36 @@ proxy() {
 
 eval "$(starship init zsh)"
 
-BREW_PREFIX=$(brew --prefix)
+if [[ $KERNEL == 'Darwin' ]]; then
+	export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
 
-if type brew &>/dev/null; then
-	FPATH=$BREW_PREFIX/share/zsh/site-functions:$BREW_PREFIX/share/zsh-completions:$FPATH
+	BREW_PREFIX=$(brew --prefix)
 
-	autoload -Uz compinit
-	compinit
+	if type brew &>/dev/null; then
+		FPATH=$BREW_PREFIX/share/zsh/site-functions:$BREW_PREFIX/share/zsh-completions:$FPATH
+
+		autoload -Uz compinit
+		compinit
+	fi
+
+	# load zsh plugins
+	source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+	source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+	HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+	if [ -f "$HB_CNF_HANDLER" ]; then
+		source "$HB_CNF_HANDLER";
+	fi
+
+	export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+
+	export LDFLAGS="-L/opt/homebrew/opt/node@20/lib"
+	export CPPFLAGS="-I/opt/homebrew/opt/node@20/include"
+elif [[ $KERNEL == 'Linux' ]]; then
+	# load zsh plugins
+	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
-
-# load zsh plugins
-source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-	source "$HB_CNF_HANDLER";
-fi
-
-export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
-
-export LDFLAGS="-L/opt/homebrew/opt/node@20/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/node@20/include"
