@@ -47,3 +47,4 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 | Hibiki.terminal                   | Configuration file for customizing settings in Apple Terminal |
 | auto-tab-discard-preferences.json | Auto Tab Discard configuration                                |
 | uBlacklist.txt                    | Websites blocked by uBlacklist                                |
+| settings.json                     | Windows Terminal settings                                     |
