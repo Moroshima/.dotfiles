@@ -5,7 +5,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-KERNEL=$(uname)
+OS=$(uname)
 
 alias ll='ls -l'
 alias l.='ls -d .*'
@@ -26,13 +26,12 @@ alias zfgrep='zfgrep --color=auto'
 alias zegrep='zegrep --color=auto'
 
 alias diff='diff --color=auto'
-alias ip='ip -color=auto'
 
 export LESS='-R --use-color -Dd+r$Du+b$'
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
 
-if [[ $KERNEL == 'Darwin' ]]; then
+if [[ $OS == 'Darwin' ]]; then
 	# enable colorized output for ls
 	export CLICOLOR=1
 
@@ -44,8 +43,10 @@ if [[ $KERNEL == 'Darwin' ]]; then
 	alias sha512sum='shasum -a 512'
 
 	alias 7z='7zz'
-elif [[ $KERNEL == 'Linux' ]]; then
+elif [[ $OS == 'Linux' ]]; then
 	alias ls='ls --color=auto'
+
+	alias ip='ip -color=auto'
 fi
 
 # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
@@ -57,7 +58,7 @@ setopt HIST_REDUCE_BLANKS
 # Do not query the user before executing ‘rm *’ or ‘rm path/*’.
 setopt RM_STAR_SILENT
 
-if [[ $KERNEL == 'Linux' ]]; then
+if [[ $OS == 'Linux' ]]; then
 	# configure the zsh history settings
 	HISTFILE="$HOME/.zsh_history"
 	HISTSIZE=2000
@@ -111,7 +112,7 @@ proxy() {
 
 eval "$(starship init zsh)"
 
-if [[ $KERNEL == 'Darwin' ]]; then
+if [[ $OS == 'Darwin' ]]; then
 	export HOMEBREW_API_DOMAIN="https://mirrors.bfsu.edu.cn/homebrew-bottles/api"
 	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.bfsu.edu.cn/homebrew-bottles"
 	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.bfsu.edu.cn/git/homebrew/brew.git"
@@ -139,7 +140,7 @@ if [[ $KERNEL == 'Darwin' ]]; then
 
 	export LDFLAGS="-L/opt/homebrew/opt/node@20/lib"
 	export CPPFLAGS="-I/opt/homebrew/opt/node@20/include"
-elif [[ $KERNEL == 'Linux' ]]; then
+elif [[ $OS == 'Linux' ]]; then
 	# load zsh plugins
 	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
