@@ -43,7 +43,7 @@
         "defaults": 
         {
             "cursorShape": "filledBox",
-            "opacity": 30,
+            "opacity": 70,
             "useAcrylic": true
         },
         "list": 
