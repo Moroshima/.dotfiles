@@ -13,6 +13,8 @@ brew "btop"
 brew "python@3.12"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
+# More intuitive version of du in rust
+brew "dust"
 # GNU Emacs text editor
 brew "emacs"
 # Perl lib for reading and writing EXIF metadata
