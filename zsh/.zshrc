@@ -69,34 +69,30 @@ if [[ $OS == 'Linux' ]]; then
 	compinit
 fi
 
-PROXY_HOST="127.0.0.1"
-PROXY_PORT="7890"
-PROXY_SOCKS_PORT="7890"
-
-export {HTTP_PROXY,http_proxy}="http://$PROXY_HOST:$PROXY_PORT"
-export {HTTPS_PROXY,https_proxy}="http://$PROXY_HOST:$PROXY_PORT"
-export {ALL_PROXY,all_proxy}="socks5://$PROXY_HOST:$PROXY_SOCKS_PORT"
-
 proxy() {
-	if [[ $* == "enable" ]]; then
+	PROXY_HOST='127.0.0.1'
+	PROXY_PORT='7890'
+	PROXY_SOCKS_PORT='7890'
+
+	if [[ "$*" == 'enable' ]]; then
 		if [[ $HTTP_PROXY && $HTTPS_PROXY && $ALL_PROXY && $http_proxy && $https_proxy && $all_proxy ]]; then
-			echo "proxy already enabled!"
+			echo 'proxy already enabled!'
 		else
 			export {HTTP_PROXY,http_proxy}="http://$PROXY_HOST:$PROXY_PORT"
 			export {HTTPS_PROXY,https_proxy}="http://$PROXY_HOST:$PROXY_PORT"
 			export {ALL_PROXY,all_proxy}="socks5://$PROXY_HOST:$PROXY_SOCKS_PORT"
-			echo "proxy enabled!"
+			echo 'proxy enabled!'
 		fi
-	elif [[ $* == "disable" ]]; then
+	elif [[ "$*" == 'disable' ]]; then
 		if [[ $HTTP_PROXY || $HTTPS_PROXY || $ALL_PRXOY || $http_proxy || $https_proxy || $all_proxy ]]; then
 			unset {HTTP_PROXY,http_proxy}
 			unset {HTTPS_PROXY,https_proxy}
 			unset {ALL_PROXY,all_proxy}
-			echo "proxy disabled!"
+			echo 'proxy disabled!'
 		else
-			echo "proxy already disabled!"
+			echo 'proxy already disabled!'
 		fi
-	else
+	elif [[ "$*" == 'status' ]]; then
 		if [[ $HTTP_PROXY || $HTTPS_PROXY || $ALL_PROXY || $http_proxy || $https_proxy || $all_proxy ]]; then
 			echo "HTTP_PROXY=${HTTP_PROXY:-'none'}"
 			echo "HTTPS_PROXY=${HTTPS_PROXY:-'none'}"
@@ -105,9 +101,52 @@ proxy() {
 			echo "https_proxy=${https_proxy:-'none'}"
 			echo "all_proxy=${all_proxy:-'none'}"
 		else
-			echo "proxy is disabled!"
+			echo 'proxy is disabled!'
 		fi
+	elif [[ "$*" == 'help' ]] || [[ "$*" == '' ]]; then
+		echo 'usage: proxy [enable|disable|status|help]'
+	else
+		echo "invalid command name \"$*\"."
 	fi
+}
+proxy enable > /dev/null 2>&1
+
+clean() {
+	declare -A array
+	array=(
+		[npm]="npm cache clean --force"
+		[yarn]='yarn cache clean'
+		[pnpm]='pnpm store prune'
+	)
+
+	if [[ $OS = 'Darwin' ]]; then
+		array+=(
+			[brew]='brew cleanup'
+		)
+	fi
+
+	if [[ $OS = 'Darwin' ]]; then
+		symbol='==>'
+	else
+		symbol='::'
+	fi
+
+	for command in ${(on)${(k)array}}; do
+		if [ "$(command -v $command)" ]; then
+			echo "\033[0;34m$symbol\033[0m \033[1mClearing the \033[32m${(k)array[$command]}\033[39m cache...\033[0m"
+			eval ${array[$command]}
+		else
+			echo "\033[1;31mcommand \"$command\" does not exist on system.\033[0m"
+			echo "\033[0;34m$symbol\033[0m Do you want to continue with the cleanup? [Y/n] \c"
+			read choice
+			case "$choice" in
+				[Yy]* | "" ) continue ;;
+				[Nn]* ) echo "cleanup process aborted!"; return 1 ;;
+				* ) echo "invalid input. cleanup process aborted!"; return 1 ;;
+			esac
+		fi
+	done
+	echo 'all cleanup tasks have been done!'
 }
 
 eval "$(starship init zsh)"
