@@ -42,6 +42,7 @@ if [[ $OS == 'Darwin' ]]; then
 	alias sha384sum='shasum -a 384'
 	alias sha512sum='shasum -a 512'
 
+	alias tar='tar --no-mac-metadata'
 	alias 7z='7zz'
 elif [[ $OS == 'Linux' ]]; then
 	alias ls='ls --color=auto'
