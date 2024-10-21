@@ -9,8 +9,6 @@ brew "b2sum"
 brew "bottom"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # More intuitive version of du in rust
@@ -43,6 +41,8 @@ brew "perl"
 brew "pnpm"
 # Show ps output as a tree
 brew "pstree"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Search tool like grep and The Silver Searcher
@@ -71,6 +71,8 @@ brew "tree"
 brew "uptimed", restart_service: true
 # Internet file retriever
 brew "wget"
+# Library to create, extract, and modify Windows Imaging files
+brew "wimlib"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
 # JavaScript package manager

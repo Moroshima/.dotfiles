@@ -42,12 +42,13 @@ if [[ $OS == 'Darwin' ]]; then
 	alias sha384sum='shasum -a 384'
 	alias sha512sum='shasum -a 512'
 
-	alias tar='tar --no-mac-metadata'
 	alias 7z='7zz'
+	alias tar='tar --no-mac-metadata --no-xattrs'
+	alias whereis='whereis -ab'
 elif [[ $OS == 'Linux' ]]; then
-	alias ls='ls --color=auto'
-
 	alias ip='ip -color=auto'
+	alias ls='ls --color=auto'
+	alias whereis='whereis -b'
 fi
 
 # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
@@ -115,8 +116,9 @@ proxy enable > /dev/null 2>&1
 clean() {
 	declare -A array
 	array=(
-		[npm]="npm cache clean --force"
+		[npm]='npm cache clean --force'
 		[yarn]='yarn cache clean'
+		[pip3]='pip3 cache purge'
 		[pnpm]='pnpm store prune'
 	)
 
@@ -133,8 +135,8 @@ clean() {
 	fi
 
 	for command in ${(on)${(k)array}}; do
+		echo "\033[0;34m$symbol\033[0m \033[1mClearing the \033[32m${(k)array[$command]}\033[39m cache...\033[0m"
 		if [ "$(command -v $command)" ]; then
-			echo "\033[0;34m$symbol\033[0m \033[1mClearing the \033[32m${(k)array[$command]}\033[39m cache...\033[0m"
 			eval ${array[$command]}
 		else
 			echo "\033[1;31mcommand \"$command\" does not exist on system.\033[0m"
@@ -156,7 +158,6 @@ if [[ $OS == 'Darwin' ]]; then
 	export HOMEBREW_API_DOMAIN="https://mirrors.bfsu.edu.cn/homebrew-bottles/api"
 	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.bfsu.edu.cn/homebrew-bottles"
 	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.bfsu.edu.cn/git/homebrew/brew.git"
-	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.bfsu.edu.cn/git/homebrew/homebrew-core.git"
 
 	BREW_PREFIX=$(brew --prefix)
 
@@ -176,10 +177,12 @@ if [[ $OS == 'Darwin' ]]; then
 		source "$HB_CNF_HANDLER";
 	fi
 
-	export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+	NODE_VERSION=20
 
-	export LDFLAGS="-L/opt/homebrew/opt/node@20/lib"
-	export CPPFLAGS="-I/opt/homebrew/opt/node@20/include"
+	export PATH="/opt/homebrew/opt/node@$NODE_VERSION/bin:$PATH"
+
+	export LDFLAGS="-L/opt/homebrew/opt/node@$NODE_VERSION/lib"
+	export CPPFLAGS="-I/opt/homebrew/opt/node@$NODE_VERSION/include"
 elif [[ $OS == 'Linux' ]]; then
 	# load zsh plugins
 	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
