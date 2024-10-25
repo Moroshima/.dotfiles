@@ -184,7 +184,16 @@ if [[ $OS == 'Darwin' ]]; then
 	export LDFLAGS="-L/opt/homebrew/opt/node@$NODE_VERSION/lib"
 	export CPPFLAGS="-I/opt/homebrew/opt/node@$NODE_VERSION/include"
 elif [[ $OS == 'Linux' ]]; then
-	# load zsh plugins
-	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+	# load zsh plugins via different paths based on the linux distro
+	case $(awk -F= '/^ID=/{print $2}' /etc/os-release) in
+  	arch)
+			source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+			source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+			;;
+  	debian)
+			source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+			source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+			;;
+  	*) echo "unknown linux distro, zsh plugins cannot be loaded" ;;
+	esac
 fi
