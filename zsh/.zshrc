@@ -29,7 +29,10 @@ alias diff='diff --color=auto'
 
 export LESS='-R --use-color -Dd+r$Du+b$'
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
-export MANROFFOPT="-P -c"
+# grotty from groff >1.23.0 requires "-c" option to output overstricken output instead of ansi escapes. less relies on the overstrike formatting to apply its color options, so we need man to pass this option when formatting the man pages for customization to be effective.
+if nroff --version | awk '{split($NF,v,"."); exit !(v[1]>1 || (v[1]==1 && v[2]>=32))}'; then
+	export MANROFFOPT="-P -c"
+fi
 
 if [[ $OS == 'Darwin' ]]; then
 	# enable colorized output for ls
