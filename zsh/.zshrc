@@ -28,11 +28,6 @@ alias zegrep='zegrep --color=auto'
 alias diff='diff --color=auto'
 
 export LESS='-R --use-color -Dd+r$Du+b$'
-export MANPAGER="less -R --use-color -Dd+r -Du+b"
-# grotty from groff >1.23.0 requires "-c" option to output overstricken output instead of ansi escapes. less relies on the overstrike formatting to apply its color options, so we need man to pass this option when formatting the man pages for customization to be effective.
-if nroff --version | awk '{split($NF,v,"."); exit !(v[1]>1 || (v[1]==1 && v[2]>=32))}'; then
-	export MANROFFOPT="-P -c"
-fi
 
 if [[ $OS == 'Darwin' ]]; then
 	# enable colorized output for ls
@@ -52,6 +47,12 @@ elif [[ $OS == 'Linux' ]]; then
 	alias ip='ip -color=auto'
 	alias ls='ls --color=auto'
 	alias whereis='whereis -b'
+
+	export MANPAGER="less -R --use-color -Dd+r -Du+b"
+	# grotty from groff >1.23.0 requires "-c" option to output overstricken output instead of ansi escapes. less relies on the overstrike formatting to apply its color options, so we need man to pass this option when formatting the man pages for customization to be effective.
+	if nroff --version | awk '{split($NF,v,"."); exit !(v[1]>1 || (v[1]==1 && v[2]>=32))}'; then
+		export MANROFFOPT="-P -c"
+	fi
 fi
 
 # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
