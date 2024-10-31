@@ -7,11 +7,9 @@
 
 OS=$(uname)
 
+# aliases from fedora
 alias ll='ls -l'
 alias l.='ls -d .*'
-
-# set an alias for 'cp' to make it interactive and preserve file attributes by default
-alias cp='cp -ip'
 
 alias grep='grep --color=auto'
 alias egrep='grep -E --color=auto'
@@ -25,6 +23,9 @@ alias zgrep='zgrep --color=auto'
 alias zfgrep='zfgrep --color=auto'
 alias zegrep='zegrep --color=auto'
 
+# set an alias for 'cp' to make it interactive and preserve file attributes by default
+alias cp='cp -ip'
+
 alias diff='diff --color=auto'
 
 export LESS='-R --use-color -Dd+r$Du+b$'
@@ -33,6 +34,7 @@ if [[ $OS == 'Darwin' ]]; then
 	# enable colorized output for ls
 	export CLICOLOR=1
 
+	# set alias for hash sum commands
 	alias md5sum='md5 -r'
 	alias sha1sum='shasum -a 1'
 	alias sha224sum='shasum -a 224'
@@ -75,6 +77,7 @@ if [[ $OS == 'Linux' ]]; then
 	compinit
 fi
 
+# the implementation of the 'proxy' function to export/unset the proxy environment variables
 proxy() {
 	PROXY_HOST='127.0.0.1'
 	PROXY_PORT='7890'
@@ -115,8 +118,10 @@ proxy() {
 		echo "invalid command name \"$*\"."
 	fi
 }
+# enable the proxy environment variables by default
 proxy enable > /dev/null 2>&1
 
+# clean up the cache of various package managers
 clean() {
 	declare -A array
 	array=(
