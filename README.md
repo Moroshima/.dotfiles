@@ -48,3 +48,44 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 | auto-tab-discard-preferences.json | Auto Tab Discard configuration                                |
 | uBlacklist.txt                    | Websites blocked by uBlacklist                                |
 | settings.json                     | Windows Terminal settings                                     |
+
+## Restart qBittorrent service periodically under linux
+
+> to prevent qBittorrent from meeting the problem of ipv6 tracker 'Cannot assign requested address' error.
+
+create the timer file
+
+```bash
+sudo vim /etc/systemd/system/qbittorrent-restart.timer
+```
+
+put the following content in the file
+
+```text
+[Unit]
+Description=Restart qBittorrent Service
+
+[Timer]
+OnUnitActiveSec=1d
+Unit=qbittorrent-nox@moroshima.service
+
+[Install]
+WantedBy=timers.target
+```
+
+then reload systemd and enable the timer
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now qbittorrent-nox-moroshima-restart.timer
+```
+
+check the status of the timer
+
+```bash
+sudo systemctl status qbittorrent-restart.timer
+```
+
+### Reference
+
+[Systemd 定时器教程 - 阮一峰的网络日志](https://www.ruanyifeng.com/blog/2018/03/systemd-timer.html)

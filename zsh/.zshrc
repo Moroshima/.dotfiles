@@ -43,17 +43,39 @@ if [[ $OS == 'Darwin' ]]; then
 	alias sha512sum='shasum -a 512'
 
 	alias 7z='7zz'
-	alias tar='tar --no-mac-metadata --no-xattrs'
 	alias whereis='whereis -ab'
+
+	tar() {
+		for arg in "$@"; do
+			if [[ "$arg" =~ ^- && ! "$arg" =~ -- ]]; then
+				letters="${arg:1}"
+				for letter in $(echo "$letters" | sed -e 's/\(.\)/\1 /g'); do
+					case "$letter" in
+						t) break ;;
+						x) addflags="--no-mac-metadata --no-xattrs"; break ;;
+						*) addflags="--no-xattrs"; break ;;
+					esac
+				done
+				break
+			fi
+			case "$arg" in
+				"--list") break ;;
+				"--extract") addflags="--no-mac-metadata --no-xattrs"; break ;;
+				*) addflags="--no-xattrs"; break ;;
+			esac
+		done
+		command tar $addflags "$@"
+		unset addflags
+	}
 elif [[ $OS == 'Linux' ]]; then
 	alias ip='ip -color=auto'
 	alias ls='ls --color=auto'
 	alias whereis='whereis -b'
 
-	export MANPAGER="less -R --use-color -Dd+r -Du+b"
+	export MANPAGER='less -R --use-color -Dd+r -Du+b'
 	# grotty from groff >1.23.0 requires "-c" option to output overstricken output instead of ansi escapes. less relies on the overstrike formatting to apply its color options, so we need man to pass this option when formatting the man pages for customization to be effective.
 	if nroff --version | awk '{split($NF,v,"."); exit !(v[1]>1 || (v[1]==1 && v[2]>=32))}'; then
-		export MANROFFOPT="-P -c"
+		export MANROFFOPT='-P -c'
 	fi
 fi
 
@@ -152,9 +174,9 @@ clean() {
 			echo "\033[0;34m$symbol\033[0m Do you want to continue with the cleanup? [Y/n] \c"
 			read choice
 			case "$choice" in
-				[Yy]* | "" ) continue ;;
-				[Nn]* ) echo "cleanup process aborted!"; return 1 ;;
-				* ) echo "invalid input. cleanup process aborted!"; return 1 ;;
+				[Yy]* | "") continue ;;
+				[Nn]*) echo "cleanup process aborted!"; return 1 ;;
+				*) echo "invalid input. cleanup process aborted!"; return 1 ;;
 			esac
 		fi
 	done
