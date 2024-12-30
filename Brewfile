@@ -9,6 +9,8 @@ brew "b2sum"
 brew "bottom"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # More intuitive version of du in rust
@@ -35,14 +37,14 @@ brew "iproute2mac"
 brew "lua"
 # Platform built on V8 to build network applications
 brew "node@20"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Highly capable, feature-rich programming language
 brew "perl"
 # Fast, disk space efficient package manager
 brew "pnpm"
 # Show ps output as a tree
 brew "pstree"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Search tool like grep and The Silver Searcher
