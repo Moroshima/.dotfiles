@@ -47,25 +47,28 @@ if [[ $OS == 'Darwin' ]]; then
 
 	tar() {
 		for arg in "$@"; do
+			# short options
 			if [[ "$arg" =~ ^- && ! "$arg" =~ -- ]]; then
 				letters="${arg:1}"
 				for letter in $(echo "$letters" | sed -e 's/\(.\)/\1 /g'); do
 					case "$letter" in
 						t) break ;;
-						x) addflags="--no-mac-metadata --no-xattrs"; break ;;
-						*) addflags="--no-xattrs"; break ;;
+						x) local addflags="--no-mac-metadata --no-xattrs"; break ;;
+						*) local addflags="--no-xattrs"; break ;;
 					esac
 				done
 				break
 			fi
+
+			# long options
 			case "$arg" in
 				"--list") break ;;
-				"--extract") addflags="--no-mac-metadata --no-xattrs"; break ;;
-				*) addflags="--no-xattrs"; break ;;
+				"--extract") local addflags="--no-mac-metadata --no-xattrs"; break ;;
+				*) local addflags="--no-xattrs"; break ;;
 			esac
 		done
+
 		command tar $addflags "$@"
-		unset addflags
 	}
 elif [[ $OS == 'Linux' ]]; then
 	alias ip='ip -color=auto'
@@ -160,10 +163,12 @@ clean() {
 	fi
 
 	if [[ $OS = 'Darwin' ]]; then
-		symbol='==>'
+		local symbol='==>'
 	else
-		symbol='::'
+		local symbol='::'
 	fi
+
+	echo $array
 
 	for command in ${(on)${(k)array}}; do
 		echo "\033[0;34m$symbol\033[0m \033[1mClearing the \033[32m${(k)array[$command]}\033[39m cache...\033[0m"
@@ -208,10 +213,11 @@ if [[ $OS == 'Darwin' ]]; then
 		source "$HB_CNF_HANDLER";
 	fi
 
-	NODE_VERSION=20
+	NODE_VERSION=22
 
 	export PATH="/opt/homebrew/opt/node@$NODE_VERSION/bin:$PATH"
 
+	# for compilers to find node
 	export LDFLAGS="-L/opt/homebrew/opt/node@$NODE_VERSION/lib"
 	export CPPFLAGS="-I/opt/homebrew/opt/node@$NODE_VERSION/include"
 elif [[ $OS == 'Linux' ]]; then

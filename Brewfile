@@ -36,7 +36,7 @@ brew "iproute2mac"
 # Powerful, lightweight programming language
 brew "lua"
 # Platform built on V8 to build network applications
-brew "node@20"
+brew "node@22"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Highly capable, feature-rich programming language
