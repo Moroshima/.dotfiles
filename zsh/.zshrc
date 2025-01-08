@@ -140,7 +140,7 @@ proxy() {
 	elif [[ "$*" == 'help' ]] || [[ "$*" == '' ]]; then
 		echo 'usage: proxy [enable|disable|status|help]'
 	else
-		echo "invalid command name \"$*\"."
+		printf "invalid command name \"%s\".\n" "$*" >&2
 	fi
 }
 # enable the proxy environment variables by default
@@ -156,36 +156,87 @@ clean() {
 		[pnpm]='pnpm store prune'
 	)
 
-	if [[ $OS = 'Darwin' ]]; then
+	if [[ $OS == 'Darwin' ]]; then
 		array+=(
 			[brew]='brew cleanup'
 		)
 	fi
 
-	if [[ $OS = 'Darwin' ]]; then
+	if [[ $OS == 'Darwin' ]]; then
 		local symbol='==>'
 	else
 		local symbol='::'
 	fi
 
-	echo $array
-
 	for command in ${(on)${(k)array}}; do
-		echo "\033[0;34m$symbol\033[0m \033[1mClearing the \033[32m${(k)array[$command]}\033[39m cache...\033[0m"
+		printf "\033[0;34m%s\033[0m \033[1mClearing the \033[32m%s\033[39m cache...\033[0m\n" "$symbol" "${(k)array[$command]}"
 		if [ "$(command -v $command)" ]; then
 			eval ${array[$command]}
 		else
-			echo "\033[1;31mcommand \"$command\" does not exist on system.\033[0m"
-			echo "\033[0;34m$symbol\033[0m Do you want to continue with the cleanup? [Y/n] \c"
+			printf "\033[1;31mcommand \"%s\" does not exist on system.\033[0m\n" "$command" >&2
+			printf "\033[0;34m%s\033[0m Do you want to continue with the cleanup process? [Y/n] " "$symbol"
 			read choice
 			case "$choice" in
 				[Yy]* | "") continue ;;
-				[Nn]*) echo "cleanup process aborted!"; return 1 ;;
-				*) echo "invalid input. cleanup process aborted!"; return 1 ;;
+				[Nn]*) echo "cleanup process aborted!" >&2; return 1 ;;
+				*) echo "invalid input. cleanup process aborted!" >&2; return 1 ;;
 			esac
 		fi
 	done
 	echo 'all cleanup tasks have been done!'
+}
+
+normalize() {
+	if [[ $OS == 'Darwin' ]]; then
+		local symbol='==>'
+	else
+		local symbol='::'
+	fi
+
+	local array=('.DS_Store' 'Thumbs.db' '._*' '*:Zone.Identifier')
+
+	printf "\033[0;34m%s\033[0m Are you sure you want to normalize %s? This will change the files and dirs mode and delete these unwanted files: %s [Y/n] " "$symbol" "$(pwd)" "${array[*]}"
+	read normalize_choice
+	case "$normalize_choice" in
+		[Yy]* | "") ;;
+		[Nn]*) echo "normalization process aborted!" >&2; return 1 ;;
+		*) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+	esac
+
+	printf "\033[0;34m%s\033[0m Are you sure you want to change the files and dirs mode? [Y/n] " "$symbol"
+	read chmod_choice
+	case "$chmod_choice" in
+		[Yy]* | "")
+			printf "\033[0;34m%s\033[0m \033[1mChanging the \033[32mfiles\033[39m mode...\033[0m\n" "$symbol"
+			find . -type f -exec chmod 644 "{}" \;
+			printf "\033[0;34m%s\033[0m \033[1mChanging the \033[32mdirs\033[39m mode...\033[0m\n" "$symbol"
+			find . -type d -exec chmod 755 "{}" \;
+			;;
+		[Nn]*) echo "normalization process aborted!" >&2; return 1 ;;
+		*) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+	esac
+
+	for name in "${array[@]}"; do
+		printf "\033[0;34m%s\033[0m \033[1mSearching \033[32m%s\033[39m files...\033[0m\n" "$symbol" "$name"
+		find . -name "$name" -type f
+		printf "\033[0;34m%s\033[0m Are you sure you want to \033[1;31mdelete\033[0m these \"%s\" files? [Y/n] " "$symbol" "$name"
+		read delete_choice
+		case "$delete_choice" in
+			[Yy]* | "") find . -name "$name" -type f -exec echo "Deleting: {}" \; -delete ;;
+			[Nn]*)
+				printf "\033[0;34m%s\033[0m Do you want to continue deleting these unwanted files? [Y/n] " "$symbol"
+				read delete_continue_choice
+				case "$delete_continue_choice" in
+					[Yy]* | "") continue ;;
+					[Nn]*) echo "normalization process aborted!" >&2; return 1 ;;
+					*) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+				esac
+			;;
+			*) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+		esac
+	done
+
+	echo "normalization process completed!"
 }
 
 eval "$(starship init zsh)"
@@ -231,6 +282,6 @@ elif [[ $OS == 'Linux' ]]; then
 			source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 			source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 			;;
-  	*) echo "unknown linux distro, zsh plugins cannot be loaded" ;;
+  	*) echo "unknown linux distro, zsh plugins cannot be loaded" >&2 ;;
 	esac
 fi
