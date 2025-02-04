@@ -70,7 +70,7 @@ brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Utility to track your highest uptimes
-brew "uptimed", restart_service: true
+brew "uptimed", restart_service: :changed
 # Internet file retriever
 brew "wget"
 # Library to create, extract, and modify Windows Imaging files
