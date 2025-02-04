@@ -7,10 +7,19 @@
 
 OS=$(uname)
 
-# aliases from fedora
+# aliases
+alias b='brew update && brew upgrade'
+alias cp='cp -ip' # set an alias for 'cp' to make it interactive and preserve file attributes by default
+alias j=jobs
+alias pu=pushd
+alias po=popd
+alias d='dirs -v'
+alias h=history
 alias ll='ls -l'
+alias la='ls -a'
 alias l.='ls -d .*'
 
+# colorize the output of commands below
 alias grep='grep --color=auto'
 alias egrep='grep -E --color=auto'
 alias fgrep='grep -F --color=auto'
@@ -23,12 +32,12 @@ alias zgrep='zgrep --color=auto'
 alias zfgrep='zfgrep --color=auto'
 alias zegrep='zegrep --color=auto'
 
-# set an alias for 'cp' to make it interactive and preserve file attributes by default
-alias cp='cp -ip'
-
 alias diff='diff --color=auto'
 
-export LESS='-R --use-color -Dd+r$Du+b$'
+export LESS='--use-color -cDd+r$Du+b$MR'
+
+# automatically remove duplicates from these arrays
+typeset -U path cdpath fpath manpath
 
 if [[ $OS == 'Darwin' ]]; then
     # enable colorized output for ls
@@ -82,14 +91,12 @@ elif [[ $OS == 'Linux' ]]; then
     fi
 fi
 
-# When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
-setopt HIST_FCNTL_LOCK
-# If a new command line being added to the history list duplicates an older one, the older command is removed from the list (even if it is not the previous event).
-setopt HIST_IGNORE_ALL_DUPS
-# Remove superfluous blanks from each command line being added to the history list.
-setopt HIST_REDUCE_BLANKS
-# Do not query the user before executing ‘rm *’ or ‘rm path/*’.
-setopt RM_STAR_SILENT
+setopt   MENU_COMPLETE        # On an ambiguous completion, instead of listing possibilities or beeping, insert the first match immediately. Then when completion is requested again, remove the first match and insert the second match, etc. When there are no more matches, go back to the first one again. reverse-menu-complete may be used to loop through the list in the other direction. This option overrides AUTO_MENU.
+setopt   HIST_FCNTL_LOCK      # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS.
+setopt   HIST_IGNORE_ALL_DUPS # If a new command line being added to the history list duplicates an older one, the older command is removed from the list (even if it is not the previous event).
+setopt   HIST_REDUCE_BLANKS   # Remove superfluous blanks from each command line being added to the history list.
+setopt   RM_STAR_SILENT       # Do not query the user before executing ‘rm *’ or ‘rm path/*’.
+unsetopt AUTO_PARAM_SLASH     # If a parameter is completed whose content is the name of a directory, then add a trailing slash instead of a space.
 
 if [[ $OS == 'Linux' ]]; then
     # configure the zsh history settings
