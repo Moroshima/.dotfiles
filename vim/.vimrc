@@ -29,3 +29,5 @@ Plug 'preservim/nerdtree'
 Plug 'rust-lang/rust.vim'
 
 call plug#end()
+
+set modelines=1
