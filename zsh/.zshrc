@@ -8,7 +8,6 @@
 OS=$(uname)
 
 # aliases
-alias b='brew update && brew upgrade'
 alias cp='cp -ip' # set an alias for 'cp' to make it interactive and preserve file attributes by default
 alias j=jobs
 alias pu=pushd
@@ -52,6 +51,7 @@ if [[ $OS == 'Darwin' ]]; then
     alias sha512sum='shasum -a 512'
 
     alias 7z='7zz'
+    alias b='brew update && brew upgrade'
     alias whereis='whereis -ab'
 
     tar() {
