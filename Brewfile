@@ -1,4 +1,4 @@
-tap "homebrew/bundle", "https://mirror.sjtu.edu.cn/git/homebrew-bundle.git/"
+tap "homebrew/bundle", "https://mirror.nju.edu.cn/git/homebrew-bundle.git/"
 tap "homebrew/command-not-found", "https://mirrors.bfsu.edu.cn/git/homebrew/homebrew-command-not-found.git"
 tap "homebrew/services", "https://mirrors.bfsu.edu.cn/git/homebrew/homebrew-services.git"
 # Zstandard is a real-time compression algorithm
@@ -9,10 +9,10 @@ brew "b2sum"
 brew "bottom"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
+# File comparison utilities
+brew "diffutils"
 # More intuitive version of du in rust
 brew "dust"
 # GNU Emacs text editor
@@ -21,6 +21,8 @@ brew "emacs"
 brew "exiftool"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
 # Distributed revision control system
@@ -35,6 +37,8 @@ brew "hwloc"
 brew "iproute2mac"
 # Powerful, lightweight programming language
 brew "lua"
+# Media player based on MPlayer and mplayer2
+brew "mpv"
 # Platform built on V8 to build network applications
 brew "node@22"
 # Swiss-army knife of markup format conversion
