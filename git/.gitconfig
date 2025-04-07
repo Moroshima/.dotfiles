@@ -1,6 +1,7 @@
 [core]
-	editor = vim
-	# enable symlinks on windows
+	#editor = vim
+	editor = code --wait
+	# explicitly enable symbolic link support on windows
 	#symlinks = true
 [http]
 	proxy = http://127.0.0.1:7890
