@@ -1,33 +1,47 @@
-set showcmd
 set mouse=a
 
 set autoindent
+
 set tabstop=4
 set shiftwidth=4
 
 set number
 set relativenumber
-set linebreak
-set ruler
 
-set hlsearch
+if has('linebreak')
+  " wrap long lines at a character in 'breakat' rather than at the last character that fits on the screen.
+  set linebreak
+endif
+
+set ruler
+set showcmd
+
+if has('extra_search')
+  " highlight search
+  set hlsearch
+endif
+
+set ignorecase
 set smartcase
 
-set autochdir
-set history=1000
-set autoread
-set list listchars=tab:▸\ 
-set wildmenu
-set wildmode=longest:list,full
+if has('autochdir')
+  set autochdir
+endif
 
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
+set autoread
+
+set list
+set listchars=tab:▸\ 
+
+if has('wildmenu')
+  set wildmenu
+endif
+set wildmode=longest:full,list:full,full
 
 call plug#begin()
 
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'preservim/nerdtree'
 Plug 'rust-lang/rust.vim'
 
 call plug#end()
-
-set modelines=1
