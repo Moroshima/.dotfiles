@@ -10,7 +10,7 @@ format = """$status$jobs$character"""
 
 # Replace the '❯' symbol in the prompt with '$'
 [character] # The name of the module we are configuring is 'character'
-success_symbol = "\\$"      # The 'success_symbol' segment is being set to '$' without a specific color
+success_symbol = "\\$" # The 'success_symbol' segment is being set to '$' without a specific color
 error_symbol = "[\\$](red)"
 
 [jobs]

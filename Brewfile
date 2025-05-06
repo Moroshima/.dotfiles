@@ -21,8 +21,6 @@ brew "emacs"
 brew "exiftool"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
 # Distributed revision control system
@@ -35,6 +33,8 @@ brew "htop"
 brew "hwloc"
 # CLI wrapper for basic network utilities on macOS - ip command
 brew "iproute2mac"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Powerful, lightweight programming language
 brew "lua"
 # Media player based on MPlayer and mplayer2
