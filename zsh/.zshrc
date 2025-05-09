@@ -61,9 +61,8 @@ if [[ $OS == 'Darwin' ]]; then
                 letters="${arg:1}"
                 for letter in $(echo "$letters" | sed -e 's/\(.\)/\1 /g'); do
                     case "$letter" in
-                        t) break ;;
-                        x) local addflags="--no-mac-metadata --no-xattrs"; break ;;
-                        *) local addflags="--no-xattrs"; break ;;
+                        c|r|u|x) local addflags=(--no-mac-metadata --no-xattrs); break ;;
+                        *) break ;;
                     esac
                 done
                 break
@@ -71,13 +70,12 @@ if [[ $OS == 'Darwin' ]]; then
 
             # long options
             case "$arg" in
-                "--list") break ;;
-                "--extract") local addflags="--no-mac-metadata --no-xattrs"; break ;;
-                *) local addflags="--no-xattrs"; break ;;
+                "--create"|"--append"|"--update"|"--extract") local addflags=(--no-mac-metadata --no-xattrs); break ;;
+                *) break ;;
             esac
         done
 
-        command tar $addflags "$@"
+        command tar "${addflags[@]}" "$@"
     }
 elif [[ $OS == 'Linux' ]]; then
     alias ip='ip -color=auto'
