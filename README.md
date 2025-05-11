@@ -139,7 +139,7 @@ put the following content in the file
 
 ```text
 [Unit]
-Description=Restart qBittorrent Service
+Description=Restart qBittorrent Service Automatically
 
 [Timer]
 OnCalendar=*-*-* 04:00:00
@@ -152,7 +152,7 @@ then reload systemd and enable the timer
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable --now qbittorrent-nox-moroshima-restart.timer
+sudo systemctl enable --now qbittorrent-restart.timer
 ```
 
 check the status of the timer
