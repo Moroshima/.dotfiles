@@ -107,6 +107,14 @@ if [[ $OS == 'Linux' ]]; then
     compinit
 fi
 
+help() {
+    echo 'Available custom commands:'
+    echo '  proxy [enable|disable|status|help]: enable or disable the proxy environment variables'
+    echo '  clean: clean up the cache of various package managers'
+    echo '  normalize: normalize the current directory by changing files and dirs mode and deleting unwanted files'
+    echo '  help: display this help message'
+}
+
 # the implementation of the 'proxy' function to export/unset the proxy environment variables
 proxy() {
     PROXY_HOST='127.0.0.1'
