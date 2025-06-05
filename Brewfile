@@ -37,8 +37,6 @@ brew "iproute2mac"
 brew "python@3.13"
 # Powerful, lightweight programming language
 brew "lua"
-# Media player based on MPlayer and mplayer2
-brew "mpv"
 # Platform built on V8 to build network applications
 brew "node@22"
 # Swiss-army knife of markup format conversion

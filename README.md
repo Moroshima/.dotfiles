@@ -15,6 +15,7 @@ stow npm
 stow ssh
 stow vim
 stow zsh
+stow mpv
 ```
 
 ## Homebrew
@@ -41,6 +42,14 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 ```
 
 then use `:PluginInstall` to install the plugins
+
+# mpv
+
+install keep-session.lua script
+
+```bash
+curl -output-dir ~/.config/mpv/scripts -O https://github.com/CogentRedTester/mpv-scripts/keep-session.lua
+```
 
 ## Other configurations
 
