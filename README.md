@@ -48,7 +48,7 @@ then use `:PluginInstall` to install the plugins
 install keep-session.lua script
 
 ```bash
-curl --output-dir ~/.config/mpv/scripts -O https://raw.githubusercontent.com/CogentRedTester/mpv-scripts/refs/heads/master/keep-session.lua
+curl --output-dir ~/.config/mpv/scripts -O https://raw.githubusercontent.com/Moroshima/mpv-scripts/refs/heads/master/keep-session.lua
 ```
 
 ## Other configurations
