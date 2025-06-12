@@ -1,6 +1,4 @@
-tap "homebrew/bundle", "https://mirror.nju.edu.cn/git/homebrew-bundle.git/"
 tap "homebrew/command-not-found", "https://mirrors.bfsu.edu.cn/git/homebrew/homebrew-command-not-found.git"
-tap "homebrew/services", "https://mirrors.bfsu.edu.cn/git/homebrew/homebrew-services.git"
 # Zstandard is a real-time compression algorithm
 brew "zstd"
 # BLAKE2 b2sum reference binary
