@@ -151,7 +151,7 @@ put the following content in the file
 Description=Restart qBittorrent Service Automatically
 
 [Timer]
-OnCalendar=*-*-* 04:00:00
+OnCalendar=Sun *-*-* 04:00:00
 
 [Install]
 WantedBy=timers.target
