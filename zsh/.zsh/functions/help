@@ -1,0 +1,5 @@
+echo 'Available custom commands:'
+echo '  proxy [enable|disable|status|help]: enable or disable the proxy environment variables'
+echo '  clean: clean up the cache of various package managers'
+echo '  normalize: normalize the current directory by changing files and dirs mode and deleting unwanted files'
+echo '  help: display this help message'

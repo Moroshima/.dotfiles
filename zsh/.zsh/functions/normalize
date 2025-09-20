@@ -1,0 +1,50 @@
+if [[ $OS == 'Darwin' ]]; then
+    local symbol='==>'
+else
+    local symbol='::'
+fi
+
+local array=('.DS_Store' 'Thumbs.db' '._*' '*:Zone.Identifier')
+
+printf "\033[0;34m%s\033[0m Are you sure you want to normalize %s? This will change the files and dirs mode and delete these unwanted files: %s [Y/n] " "$symbol" "$(pwd)" "${array[*]}"
+read normalize_choice
+case "$normalize_choice" in
+    [Yy]* | "") ;;
+    [Nn]*) echo "normalization process aborted!" >&2; return 1 ;;
+    *) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+esac
+
+printf "\033[0;34m%s\033[0m Are you sure you want to change the files and dirs mode? [Y/n] " "$symbol"
+read chmod_choice
+case "$chmod_choice" in
+    [Yy]* | "")
+        printf "\033[0;34m%s\033[0m \033[1mChanging the \033[32mfiles\033[39m mode...\033[0m\n" "$symbol"
+        find . -type f -exec chmod 644 "{}" \;
+        printf "\033[0;34m%s\033[0m \033[1mChanging the \033[32mdirs\033[39m mode...\033[0m\n" "$symbol"
+        find . -type d -exec chmod 755 "{}" \;
+        ;;
+    [Nn]*) echo "normalization process aborted!" >&2; return 1 ;;
+    *) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+esac
+
+for name in "${array[@]}"; do
+    printf "\033[0;34m%s\033[0m \033[1mSearching \033[32m%s\033[39m files...\033[0m\n" "$symbol" "$name"
+    find . -name "$name" -type f
+    printf "\033[0;34m%s\033[0m Are you sure you want to \033[1;31mdelete\033[0m these \"%s\" files? [Y/n] " "$symbol" "$name"
+    read delete_choice
+    case "$delete_choice" in
+        [Yy]* | "") find . -name "$name" -type f -exec echo "Deleting: {}" \; -delete ;;
+        [Nn]*)
+            printf "\033[0;34m%s\033[0m Do you want to continue deleting these unwanted files? [Y/n] " "$symbol"
+            read delete_continue_choice
+            case "$delete_continue_choice" in
+                [Yy]* | "") continue ;;
+                [Nn]*) echo "normalization process aborted!" >&2; return 1 ;;
+                *) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+            esac
+        ;;
+        *) echo "invalid input. normalization process aborted!" >&2; return 1 ;;
+    esac
+done
+
+echo "normalization process completed!"

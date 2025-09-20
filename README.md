@@ -51,6 +51,14 @@ install keep-session.lua script
 curl --output-dir ~/.config/mpv/scripts -O https://raw.githubusercontent.com/Moroshima/mpv-scripts/refs/heads/master/keep-session.lua
 ```
 
+# Zsh
+
+compile zsh functions for better performance
+
+```bash
+zcompile -R zsh/.zsh/functions.zwc zsh/.zsh/functions/*(.N)
+```
+
 ## Other configurations
 
 | file            | introduction                                                  |

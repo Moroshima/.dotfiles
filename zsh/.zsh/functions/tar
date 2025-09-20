@@ -1,0 +1,21 @@
+for arg in "$@"; do
+    # short options
+    if [[ "$arg" =~ ^- && ! "$arg" =~ -- ]]; then
+        letters="${arg:1}"
+        for letter in $(echo "$letters" | sed -e 's/\(.\)/\1 /g'); do
+            case "$letter" in
+                c|r|u|x) local addflags=(--no-mac-metadata --no-xattrs); break ;;
+                *) break ;;
+            esac
+        done
+        break
+    fi
+
+    # long options
+    case "$arg" in
+        "--create"|"--append"|"--update"|"--extract") local addflags=(--no-mac-metadata --no-xattrs); break ;;
+        *) break ;;
+    esac
+done
+
+command tar "${addflags[@]}" "$@"

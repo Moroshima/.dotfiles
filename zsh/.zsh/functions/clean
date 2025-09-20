@@ -1,0 +1,36 @@
+declare -A array
+array=(
+    [npm]='npm cache clean --force'
+    [yarn]='yarn cache clean'
+    [pip3]='pip3 cache purge'
+    [pnpm]='pnpm store prune'
+)
+
+if [[ $OS == 'Darwin' ]]; then
+    array+=(
+        [brew]='brew cleanup'
+    )
+fi
+
+if [[ $OS == 'Darwin' ]]; then
+    local symbol='==>'
+else
+    local symbol='::'
+fi
+
+for command in ${(on)${(k)array}}; do
+    printf "\033[0;34m%s\033[0m \033[1mClearing the \033[32m%s\033[39m cache...\033[0m\n" "$symbol" "${(k)array[$command]}"
+    if [ "$(command -v $command)" ]; then
+        eval ${array[$command]}
+    else
+        printf "\033[1;31mcommand \"%s\" does not exist on system.\033[0m\n" "$command" >&2
+        printf "\033[0;34m%s\033[0m Do you want to continue with the cleanup process? [Y/n] " "$symbol"
+        read choice
+        case "$choice" in
+            [Yy]* | "") continue ;;
+            [Nn]*) echo "cleanup process aborted!" >&2; return 1 ;;
+            *) echo "invalid input. cleanup process aborted!" >&2; return 1 ;;
+        esac
+    fi
+done
+echo 'all cleanup tasks have been done!'
