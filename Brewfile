@@ -1,4 +1,4 @@
-tap "homebrew/command-not-found", "https://mirrors.bfsu.edu.cn/git/homebrew/homebrew-command-not-found.git"
+tap "homebrew/command-not-found", "https://mirror.nju.edu.cn/git/homebrew/homebrew-command-not-found.git"
 # Zstandard is a real-time compression algorithm
 brew "zstd"
 # BLAKE2 b2sum reference binary
@@ -13,8 +13,6 @@ brew "deno"
 brew "diffutils"
 # More intuitive version of du in rust
 brew "dust"
-# GNU Emacs text editor
-brew "emacs"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
 # Like neofetch, but much faster because written mostly in C
@@ -31,8 +29,6 @@ brew "htop"
 brew "hwloc"
 # CLI wrapper for basic network utilities on macOS - ip command
 brew "iproute2mac"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 # Powerful, lightweight programming language
 brew "lua"
 # Platform built on V8 to build network applications
@@ -69,8 +65,12 @@ brew "stress"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Markup-based typesetting system
+brew "typst"
 # Utility to track your highest uptimes
 brew "uptimed", restart_service: :changed
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Internet file retriever
 brew "wget"
 # Library to create, extract, and modify Windows Imaging files
@@ -85,3 +85,7 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# Text editor
+cask "emacs-app"
+# Media player based on MPlayer and mplayer2
+cask "stolendata-mpv"
