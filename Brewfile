@@ -1,4 +1,3 @@
-tap "homebrew/command-not-found", "https://mirror.nju.edu.cn/git/homebrew/homebrew-command-not-found.git"
 # Zstandard is a real-time compression algorithm
 brew "zstd"
 # BLAKE2 b2sum reference binary
@@ -7,10 +6,14 @@ brew "b2sum"
 brew "bottom"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Securely send things from one computer to another
+brew "croc"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # File comparison utilities
 brew "diffutils"
+# Convert text between DOS, UNIX, and Mac formats
+brew "dos2unix"
 # More intuitive version of du in rust
 brew "dust"
 # Perl lib for reading and writing EXIF metadata
@@ -19,20 +22,28 @@ brew "exiftool"
 brew "fastfetch"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
+# Banner-like program prints strings as ASCII art
+brew "figlet"
 # Distributed revision control system
 brew "git"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Command-line tool for generating regular expressions
+brew "grex"
 # Improved top (interactive process viewer)
 brew "htop"
 # Portable abstraction of the hierarchical topology of modern architectures
 brew "hwloc"
 # CLI wrapper for basic network utilities on macOS - ip command
 brew "iproute2mac"
+# Command-line note taker
+brew "jrnl"
+# Rainbows and unicorns in your console!
+brew "lolcat"
 # Powerful, lightweight programming language
 brew "lua"
-# Platform built on V8 to build network applications
-brew "node@22"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Highly capable, feature-rich programming language
@@ -43,6 +54,10 @@ brew "pnpm"
 brew "pstree"
 # Generic machine emulator and virtualizer
 brew "qemu"
+# Rsync for cloud storage
+brew "rclone"
+# Fast, efficient and secure backup program
+brew "restic"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Powerful, clean, object-oriented scripting language
