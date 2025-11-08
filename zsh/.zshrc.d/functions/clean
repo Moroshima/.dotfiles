@@ -6,13 +6,13 @@ array=(
     [pnpm]='pnpm store prune'
 )
 
-if [[ $OS == 'Darwin' ]]; then
+if [[ $(uname) == 'Darwin' ]]; then
     array+=(
         [brew]='brew cleanup'
     )
 fi
 
-if [[ $OS == 'Darwin' ]]; then
+if [[ $(uname) == 'Darwin' ]]; then
     local symbol='==>'
 else
     local symbol='::'

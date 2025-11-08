@@ -1,3 +1,7 @@
+PROXY_HOST='127.0.0.1'
+PROXY_HTTP_PORT='7890'
+PROXY_SOCKS_PORT='7890'
+
 if [[ "$*" == 'enable' ]]; then
     if [[ $HTTP_PROXY && $HTTPS_PROXY && $ALL_PROXY && $http_proxy && $https_proxy && $all_proxy ]]; then
         echo 'proxy already enabled!'
