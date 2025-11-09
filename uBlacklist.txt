@@ -1,4 +1,0 @@
-*://*.baidu.com/*
-*://*.csdn.net/*
-*://*.zhihu.com/*
-*://*.douyin.com/*
